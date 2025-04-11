@@ -1,4 +1,5 @@
 import {createElement} from '../framework/render.js'; 
+import { AbstractComponent } from '../framework/view/abstract-component.js';
 
 function createAddTaskFormComponentTemplate() {
     return(
@@ -15,24 +16,16 @@ function createAddTaskFormComponentTemplate() {
 }
 
 
-export default class AddTaskFormComponentComponent {
-  getTemplate() {
+export default class AddTaskFormComponentComponent extends AbstractComponent{
+
+  constructor() {
+    super();
+    this._element = null; // Приватное свойство вместо публичного
+  }
+
+  get template(){
     return createAddTaskFormComponentTemplate();
   }
-
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-
-    return this.element;
-  }
-
-
-  removeElement() {
-    this.element = null;
-  }
+  
 }
 

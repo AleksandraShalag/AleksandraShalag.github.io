@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>Список задач</title>
+    
+    
+</head>
+<body>
+    <header>
+        <h1>Список задач</h1>
+    </header>
+    <div class="main-container">
+        <section name="AddTask">
+            <h2>Новая задача</h2>
+            <form action="" name="AddTaskForm">
+                <input type="text" name="AddTaskEditText" placeholder="Название задачи..." required>
+                <button type="submit" name="AddTaskButton">+ Добавить</button>
+            </form>
+        </section>
+        <section name="TaskStorage">
+            <section name="SectionBacklogTasks" class="task-section">
+                <h3 name="SectionBacklogTasksHeading">Бэклог</h3>
+                    <ul id="backlog">
+                        <li>Выучить JS</li>
+                        <li>Выучить React</li>
+                        <li>Сделать домашку</li>
+                    </ul>
+            </section>
+
+            <section name="SectionInProgressTasks" class="task-section">
+                <h3 name="SectionInProgressTasksHeading">В процессе</h3>
+                    <ul id="inProgress">
+                        <li>Выпить смузи</li>
+                        <li>Попить воды</li>
+                    </ul>
+                
+            </section>
+        
+            <section name="SectionDoneTasks" class="task-section">
+                <h3 name="SectionDoneTasksHeading">Готово</h3>
+                    <ul id="done">
+                        <li>Позвонить маме</li>
+                        <li>Погладить кота</li>
+                    </ul>
+                
+            </section>
+        
+            <section name="SectionTrashTasks" class="task-section">
+                <h3 name="SectionTrashTasksHeading">Корзина</h3>
+                    <ul id="trash">
+                        <li>Сходить погулять</li>
+                        <li>Прочитать "Войну и Мир gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhhhhhhhhhhhhhhhhhh hhhhhhhh"</li>
+                    </ul>
+                <button name="clearTrash">X Очистить</button>
+            </section>
+        </section>
+    </div>
+    
+</body>
+</html>

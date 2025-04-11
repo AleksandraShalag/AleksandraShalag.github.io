@@ -26,7 +26,3 @@ const tasksBoardPresenter = new TasksBoardPresenter({
   statuses: Object.values(TASK_STATUSES),
 });
 tasksBoardPresenter.init();
-
-// Кнопка очистки корзины
-const clearButtonContainer = document.querySelector('.task-component-basket');
-render(new ClearButtonComponent(), clearButtonContainer);

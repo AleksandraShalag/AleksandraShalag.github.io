@@ -1,4 +1,5 @@
 import {createElement} from '../framework/render.js'; 
+import { AbstractComponent } from '../framework/view/abstract-component.js';
 
 
 function createBoardTaskComponentTemplate() {
@@ -11,24 +12,16 @@ function createBoardTaskComponentTemplate() {
   
 
 
-export default class BoardTaskComponent {
-  getTemplate() {
+export default class BoardTaskComponent extends AbstractComponent{
+  
+  constructor() {
+    super();
+    this._element = null; // Приватное свойство вместо публичного
+  }
+
+  get template() {
     return createBoardTaskComponentTemplate();
   }
 
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-
-    return this.element;
-  }
-
-
-  removeElement() {
-    this.element = null;
-  }
 }
 

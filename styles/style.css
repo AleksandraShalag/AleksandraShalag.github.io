@@ -170,6 +170,19 @@ ul li {
     border-left-color: #dc3545;
 }
 
+.no-task-list-item{
+    background: aliceblue;
+    border: 2px dashed #dee2e6;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 8px 0;
+    text-align: center;
+    color: #6c757d;
+    font-size: 14px;
+    cursor: move; /* Имитация возможности перетаскивания */
+    transition: all 0.2s;
+}
+
 .clear-button {
     display: block;
     width: 100%;
