@@ -16,7 +16,12 @@ render(new HeaderComponent(), bodyContainer, RenderPosition.BEFOREBEGIN);
 
 // Форма добавления задачи
 const addTaskContainer = document.querySelector('.add-task');
-render(new AddTaskFormComponentComponent(), addTaskContainer);
+render(new AddTaskFormComponentComponent({onClick:handleNewTaskButtonClick}), addTaskContainer);
+
+function handleNewTaskButtonClick(){
+  tasksBoardPresenter.createTask();
+}
+
 
 // Доска задач
 const boardTasksContainer = document.querySelector('.board-task');

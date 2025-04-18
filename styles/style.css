@@ -179,7 +179,6 @@ ul li {
     text-align: center;
     color: #6c757d;
     font-size: 14px;
-    cursor: move; /* Имитация возможности перетаскивания */
     transition: all 0.2s;
 }
 

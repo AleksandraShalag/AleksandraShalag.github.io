@@ -13,6 +13,7 @@ export default class TasksBoardPresenter {
   constructor({boardContainer, taskModel, statuses}) {
     this.#boardContainer = boardContainer;
     this.#taskModel = taskModel;
+    this.#taskModel.addObserver(this.#handleModelChange.bind(this));
     this.#statuses = statuses;
   }
 
@@ -37,10 +38,22 @@ export default class TasksBoardPresenter {
     });
   }
 
-
-  #renderClearButton(container){
-    const clearButton = new ClearButtonComponent();
+  #renderClearButton(container) {
+    const clearButton = new ClearButtonComponent({
+      onClick: () => this.#handleClearButtonClick() 
+    });
     render(clearButton, container);
+  }
+
+  #handleClearButtonClick() {
+    // Удаляем все задачи с статусом "basket"
+    const basketTasks = this.#taskModel.getTasksByStatus('basket');
+
+    // Удаляем каждую задачу по ID
+    basketTasks.forEach(task => {
+      this.#taskModel.removeTask(task.id);
+    });
+
   }
   
   #renderBoardTask() {
@@ -58,6 +71,7 @@ export default class TasksBoardPresenter {
 
       //Добавляем кнопку для корзины, но только в том случае, если в корзине хоть что-то есть
       if(status.class==="basket" & tasks.length != 0){
+        
         this.#renderClearButton(container);
       }
       
@@ -90,5 +104,28 @@ export default class TasksBoardPresenter {
       render(noTasksComponent, container);
   }
    
-  
+  createTask(){
+    const taskTitle = document.querySelector('#addTaskEditText').value.trim();
+    if(!taskTitle){
+      return;
+    }
+
+    this.#taskModel.addTask(taskTitle);
+
+    document.querySelector('#addTaskEditText').value='';
+  }
+
+  #handleModelChange(){
+    this.#clearBoard();
+    this.init();
+  }
+
+  #clearBoard(){
+    this.#boardContainer.innerHTML ='';
+  }
+
+  get tasks(){
+    return this.#taskModel.tasks;
+  }
+
 }
