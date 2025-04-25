@@ -18,24 +18,25 @@ export default class TasksBoardPresenter {
   }
 
   init() {
+    this.#clearBoard();
+    this.#renderBoard();
+  }
+
+  #renderBoard() {
     this.#statuses.forEach((status) => {
       const tasks = this.#taskModel.getTasksByStatus(status.class);
-      
-    
-        // Создаем базу компонента колонки
-        const boardTaskComponent = this.#renderBoardTask();
 
-        // Создаем заголовок и пустой список компонента колонки
-        const taskComponent = this.#renderTaskComponent(status, boardTaskComponent.element,tasks);
-
-        //Находим ul внутри TaskComponent
-        const taskListContainer = taskComponent.element.querySelector('.tasks-list');
-        
-        // Создаем задачи внутрии списка
-        this.#renderTaskListComponent(status, tasks, taskListContainer);
-
-
+      const boardTaskComponent = this.#renderBoardColumn();
+      const taskComponent = this.#renderTaskComponent(status, boardTaskComponent.element, tasks);
+      const taskListContainer = taskComponent.element.querySelector('.tasks-list');
+      this.#renderTaskListComponent(status, tasks, taskListContainer);
     });
+  }
+
+  #renderBoardColumn() {
+    const boardTaskComponent = new BoardTaskComponent();
+    render(boardTaskComponent, this.#boardContainer);
+    return boardTaskComponent;
   }
 
   #renderClearButton(container) {
@@ -56,27 +57,20 @@ export default class TasksBoardPresenter {
 
   }
   
-  #renderBoardTask() {
 
-    const boardTaskComponent = new BoardTaskComponent();
-    render(boardTaskComponent, this.#boardContainer);
-    return boardTaskComponent; // Возвращаем компонент
-
-  }
-
-  #renderTaskComponent(status, container,tasks) {
+  
+  #renderTaskComponent(status, container, tasks) {
+    const taskComponent = new TaskComponent({
+      status: status,
+      onTaskDrop: (data) => this.#handleTaskDrop(data) // Правильная передача колбэка
+    });
+    render(taskComponent, container);
     
-      const taskComponent = new TaskComponent({status: status});
-      render(taskComponent, container);
-
-      //Добавляем кнопку для корзины, но только в том случае, если в корзине хоть что-то есть
-      if(status.class==="basket" & tasks.length != 0){
-        
-        this.#renderClearButton(container);
-      }
-      
-      return taskComponent;
-
+    if (status.class === "basket" && tasks.length !== 0) {
+      this.#renderClearButton(container);
+    }
+    
+    return taskComponent;
   }
 
   #renderTaskListComponent(status, tasks, container){
@@ -98,7 +92,12 @@ export default class TasksBoardPresenter {
 
 
   }
+
   
+  #handleTaskDrop({taskId, newStatus, insertIndex}) {
+    this.#taskModel.updateTaskStatus(taskId, newStatus, insertIndex);
+  }
+
   #renderNoTasksComponent(status,container){
     const noTasksComponent = new NoTasksComponent({status});
       render(noTasksComponent, container);
