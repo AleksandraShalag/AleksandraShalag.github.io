@@ -1,5 +1,6 @@
 import {createElement} from '../framework/render.js'; 
 import { AbstractComponent } from '../framework/view/abstract-component.js';
+import { getDragAfterElement } from '../utils.js';
 
 
 function createTaskComponentTemplate({status}) {
@@ -14,10 +15,14 @@ function createTaskComponentTemplate({status}) {
 }
 export default class TaskComponent extends AbstractComponent{
 
-  
-  constructor({status}) {
+  constructor({status, onTaskDrop}) {
     super();
-    this._status = status; // Приватное свойство
+    this._status = status;
+    
+    this.element;  
+    this._onTaskDrop = onTaskDrop;
+    this.element.addEventListener('dragover', this.#handleDragOver.bind(this));
+    this.element.addEventListener('drop', this.#handleDrop.bind(this));
   }
 
   get template() {
@@ -26,5 +31,34 @@ export default class TaskComponent extends AbstractComponent{
     });
   }
 
+  #handleDragOver(evt) {
+    evt.preventDefault();
+    const listItems = this.element.querySelectorAll('.task-list-item:not(.dragging)');
+    const afterIndex = this.#getDragAfterElement(listItems, evt.clientY);
+  }
+
+  #getDragAfterElement(items, y) {
+    return Array.from(items).reduce((closest, child, index) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      return offset < 0 && offset > closest.offset 
+        ? { offset: offset, index: index } 
+        : closest;
+    }, { offset: Number.NEGATIVE_INFINITY }).index;
+  }
+
+  #handleDrop(evt) {
+    evt.preventDefault();
+    const taskId = evt.dataTransfer.getData('text/plain');
+    const newStatus = this._status.class;
+    const listItems = this.element.querySelectorAll('.task-list-item:not(.dragging)');
+    const afterIndex = this.#getDragAfterElement(listItems, evt.clientY);
+    
+    this._onTaskDrop({
+      taskId: taskId,
+      newStatus: newStatus,
+      insertIndex: afterIndex >= 0 ? afterIndex : listItems.length
+    });
+  }
   
 }
