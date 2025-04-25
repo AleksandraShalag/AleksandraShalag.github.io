@@ -25,6 +25,7 @@ export default class TasksModel{
         this._notifyObservers();
         return newTask;
     }
+    
 
     addObserver(observer){
         this.#observers.push(observer);
@@ -37,4 +38,20 @@ export default class TasksModel{
     _notifyObservers(){
         this.#observers.forEach((observer)=>observer());
     }
+
+    updateTaskStatus(taskId, newStatus, insertIndex = Infinity) {
+        const task = this.#boardtasks.find(t => t.id === taskId);
+        if (!task) return;
+      
+        const filteredTasks = this.#boardtasks.filter(t => t.id !== taskId);
+        const targetTasks = filteredTasks.filter(t => t.status === newStatus);
+        const others = filteredTasks.filter(t => t.status !== newStatus);
+      
+        const adjustedIndex = Math.min(insertIndex, targetTasks.length);
+        const updatedTask = {...task, status: newStatus};
+        
+        targetTasks.splice(adjustedIndex, 0, updatedTask);
+        this.#boardtasks = [...others, ...targetTasks];
+        this._notifyObservers();
+      }
 }
