@@ -154,19 +154,19 @@ ul li {
     overflow-wrap: break-word; /* Перенос длинных слов */
     word-break: break-word; /* Обязательный перенос */
 }
-.task-list-item-backlog {
+.task-list-item.backlog {
     border-left-color: #8c8c8c;
 }
 
-.task-list-item-processing {
+.task-list-item.processing {
     border-left-color: #007bff;
 }
 
-.task-list-item-done{
+.task-list-item.done{
     border-left-color: #28a745;
 }
 
-.task-list-item-basket{
+.task-list-item.basket{
     border-left-color: #dc3545;
 }
 
