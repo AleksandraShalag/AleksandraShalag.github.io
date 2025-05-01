@@ -38,15 +38,19 @@ export default class TaskComponent extends AbstractComponent{
   }
 
   #getDragAfterElement(items, y) {
-    return Array.from(items).reduce((closest, child, index) => {
-      const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-      return offset < 0 && offset > closest.offset 
-        ? { offset: offset, index: index } 
-        : closest;
-    }, { offset: Number.NEGATIVE_INFINITY }).index;
+    if (items.length === 0) return -1; // Специальное значение для пустого списка
+  
+    return Array.from(items).reduce(
+      (closest, child, index) => {
+        const box = child.getBoundingClientRect();
+        const offset = y - box.top - box.height / 2;
+        return offset < 0 && offset > closest.offset 
+          ? { offset, index } 
+          : closest;
+      }, 
+      { offset: Number.NEGATIVE_INFINITY }
+    ).index;
   }
-
   #handleDrop(evt) {
     evt.preventDefault();
     const taskId = evt.dataTransfer.getData('text/plain');

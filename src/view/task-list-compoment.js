@@ -41,6 +41,7 @@ export default class TaskListComponent extends AbstractComponent{
     });
   }
 
+  // Новый метод для установки элементов списка
   setListElements(elements) {
     this._listElements = elements;
   }
