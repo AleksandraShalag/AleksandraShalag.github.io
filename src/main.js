@@ -5,11 +5,18 @@ import TasksModel from './model/task-model.js';
 import {TASK_STATUSES} from './const.js';
 import ClearButtonComponent from './view/clear-button-component.js';
 import {render, RenderPosition} from './framework/render.js';
+import TasksApiService from './task-api-service.js';
+import LoadingComponent from './view/loading-component.js';
 
 
+const END_POINT = 'https://6808c876942707d722dfbf8b.mockapi.io';
 
-const tasksModel = new TasksModel();
+const tasksModel = new TasksModel({
+  tasksApiService: new TasksApiService(END_POINT)
+});
 
+
+  
 // Хедер
 const bodyContainer = document.querySelector('.board-app');
 render(new HeaderComponent(), bodyContainer, RenderPosition.BEFOREBEGIN);
